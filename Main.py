@@ -54,8 +54,8 @@ def Calculate(station_list,date1,time1,date2,time2,wfo):
 
 def Write(local_csv,df2):
     local_csv.loc[-1] = df2
-    local_csv.index = local_csv.index + 1  # shifting index
-    local_csv = local_csv.sort_index()  # sorting by index
+    local_csv.index = local_csv.index + 1  
+    local_csv = local_csv.sort_index()  
     local_csv.to_csv('C:\\Users\\Tony\\Desktop\\Capstone\\farpod.csv',index=False)
 
 def main():
