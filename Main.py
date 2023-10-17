@@ -49,7 +49,7 @@ def Calculate(station_list,date1,time1,date2,time2,wfo):
     print((no_snow/total)*100)
 
 
-    df2 = {'startdate': datetime.strptime(date1+' '+time1,'%m/%d/%Y %H:%M'), 'enddate': datetime.strptime(date2+' '+time2,'%m/%d/%Y %H:%M'), 'wfo': wfo, 'far': snow_sum, 'pod': no_snow, 'far_pct': round((snow_sum/total)*100, 3), 'pod_pct': round((no_snow/total)*100, 3)}
+    df2 = {'startdate': datetime.strptime(date1+' '+time1,'%m/%d/%Y %H:%M'), 'enddate': datetime.strptime(date2+' '+time2,'%m/%d/%Y %H:%M'), 'wfo': wfo, 'far': no_snow, 'pod': snow_sum, 'far_pct': round((no_snow/total)*100, 3), 'pod_pct': round((snow_sum/total)*100, 3)}
     return df2
 
 def Write(local_csv,df2):
