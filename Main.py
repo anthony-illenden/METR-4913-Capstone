@@ -14,7 +14,7 @@ import pandas as pd
 from datetime import datetime
 
 def Read():
-    local_csv = pd.read_csv('C:\\Users\\Tony\\Desktop\\Capstone\\farpod.csv')
+    local_csv = pd.read_csv('C:\\Users\\Tony\\Desktop\\Capstone\\farpod4.csv')
     return local_csv
 
 def Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo):
@@ -44,7 +44,20 @@ def Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo
             snow_df_parsed = total_df[(total_df['station'] == i) & (total_df['wxcodes'] == j)]
             #print(new_df_parsed)
             snow_sum += len(snow_df_parsed)
-
+    vsbylist = []
+    total_df['vsby'] = total_df['vsby'].astype('float')
+    total_df['vsby'] = total_df['vsby'].astype('int')
+    for i in range(0, len(total_df['vsby'])):
+        data = total_df['vsby'].iloc[i]
+        if data >= 1: 
+            output = 'light'
+        elif data >= .5:
+            output = 'moderate'
+        else:
+            output = 'heavy'
+        vsbylist.append(output)
+            
+    total_df['vsby_literal'] = vsbylist 
     no_snow = total - snow_sum
 
     print(snow_sum)
@@ -52,27 +65,42 @@ def Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo
     print((snow_sum/total)*100)
     print((no_snow/total)*100)
 
+    print(len(total_df[total_df['vsby_literal'] == 'light']) / len(total_df['vsby_literal']))
+    print(len(total_df[total_df['vsby_literal'] == 'moderate']) / len(total_df['vsby_literal']))
+    print(len(total_df[total_df['vsby_literal'] == 'heavy']) / len(total_df['vsby_literal']))
+    lgt = len(total_df[total_df['vsby_literal'] == 'light']) / len(total_df['vsby_literal'])
+    mod = len(total_df[total_df['vsby_literal'] == 'moderate']) / len(total_df['vsby_literal'])
+    hvy = len(total_df[total_df['vsby_literal'] == 'heavy']) / len(total_df['vsby_literal'])
 
-    df2 = {'startdate': datetime.strptime(date1+' '+time1,'%m/%d/%Y %H:%M'), 'enddate': datetime.strptime(date2+' '+time2,'%m/%d/%Y %H:%M'), 'wfo': wfo, 'far': no_snow, 'pod': snow_sum, 'far_pct': round((no_snow/total)*100, 3), 'pod_pct': round((snow_sum/total)*100, 3)}
+    df2 = {'startdate': datetime.strptime(date1+' '+time1,'%m/%d/%Y %H:%M'),
+           'enddate': datetime.strptime(date2+' '+time2,'%m/%d/%Y %H:%M'),
+           'wfo': wfo,
+           'far': no_snow,
+           'pod': snow_sum,
+           'far_pct': round((no_snow/total)*100, 3),
+           'pod_pct': round((snow_sum/total)*100, 3),
+           'lgt_pct': round((lgt)*100, 3),
+           'mod_pct': round((mod)*100, 3),
+           'hvy_pct': round((hvy)*100, 3)}
     return df2
 
 def Write(local_csv,df2):
     local_csv.loc[-1] = df2
     local_csv.index = local_csv.index + 1  # shifting index
     local_csv = local_csv.sort_index()  # sorting by index
-    local_csv.to_csv('C:\\Users\\Tony\\Desktop\\Capstone\\farpod.csv',index=False)
+    local_csv.to_csv('C:\\Users\\Tony\\Desktop\\Capstone\\farpod4.csv',index=False)
 
 def main():
-    date1 = '12/17/2022'
+    date1 = '12/18/2019'
     month1 = '12' 
-    year1 = '2022'
-    time1 = '17:00'
-    date2 = '12/18/2022'
+    year1 = '2019'
+    time1 = '16:44'
+    date2 = '12/18/2019'
     month2 = '12' 
-    year2 = '2022'
-    time2 = '00:00'
-    wfo = 'apx_v3'
-    station_list = ['CVX', 'BFA','MGN', 'PLN']
+    year2 = '2019'
+    time2 = '20:10'
+    wfo = 'apx'
+    station_list = ['CVX','BFA','GLR','ACB','TVC','GOV','FKS','CAD'] 
     local_csv = Read()
     df2 = Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo)
     Write(local_csv,df2)
