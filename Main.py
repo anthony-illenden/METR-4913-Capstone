@@ -78,6 +78,9 @@ def Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo
            'pod': snow_sum,
            'far_pct': round((no_snow/total)*100, 3),
            'pod_pct': round((snow_sum/total)*100, 3),
+           'lgt': len(total_df[total_df['vsby_literal'] == 'light']),
+           'mod': len(total_df[total_df['vsby_literal'] == 'moderate']),
+           'hvy': len(total_df[total_df['vsby_literal'] == 'heavy']),
            'lgt_pct': round((lgt)*100, 3),
            'mod_pct': round((mod)*100, 3),
            'hvy_pct': round((hvy)*100, 3)}
