@@ -46,7 +46,6 @@ def Calculate(station_list,date1,month1,year1,time1,date2,time2,month2,year2,wfo
             snow_sum += len(snow_df_parsed)
     vsbylist = []
     total_df['vsby'] = total_df['vsby'].astype('float')
-    total_df['vsby'] = total_df['vsby'].astype('int')
     for i in range(0, len(total_df['vsby'])):
         data = total_df['vsby'].iloc[i]
         if data >= 1: 
